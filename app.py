@@ -26,7 +26,7 @@ img = Image.open('assets/rm3_1.png')
 max_trail_limit = 15
 X = deque(maxlen=max_trail_limit)
 Y = deque(maxlen=max_trail_limit)
-interval = 1000  # Timer for updating the graph in milli seconds
+interval = 5000  # Timer for updating the graph in milli seconds
 
 # Initial data
 initial_data = tail()
@@ -72,8 +72,9 @@ app.layout = html.Div(
         html.Div(
             id="header",
             children=[
-                html.Img(id="logo", src=app.get_asset_url("dash-logo.png")),
-                html.H4(id='heading', children="Pedestrian Dead Reckoning and Anomaly Detector"),
+                html.Img(id="logo", src=app.get_asset_url("logo.png")),
+                # html.Pre(id="logo", children='BlueTrack Security'),
+                html.H4(children="Pedestrian Dead Reckoning and Anomaly Detector"),
                 html.P(
                     id="description",
                     children="Application for mapping and detecting anomalies in the PDR data from Oblu sensor",
@@ -90,12 +91,13 @@ app.layout = html.Div(
                         html.Div(
                             className="app-image",
                             id="heatmap-container",
+
                             children=[
                                 html.P(
-                                    "Live Map",
+                                    "Track received from sensor",
                                     id="heatmap-titles",
                                 ),
-                                html.Img(src=img, alt='bg_image')
+                                html.Img(id='map', src=img, alt='bg_image', hidden=False,)
                             ]
                         ),
                         html.Div(
@@ -132,21 +134,49 @@ app.layout = html.Div(
                                     interval=interval,
                                     n_intervals=0
                                 ),
+                                html.Br(),
+                                dcc.Checklist(
+                                    id='map_checkbox',
+                                    options=[
+                                        {'label': 'Show background Map', 'value': 'show_map'}
+                                    ],
+                                ),
+                                html.Br(),
+                                # html.P(
+                                #     children="Drag the slider to change the opacity of plot:",
+                                # ),
+                                # dcc.Slider(
+                                #     id='map_opacity_slider',
+                                #     min=-5,
+                                #     max=10,
+                                #     step=0.5,
+                                #     value=-3
+                                # ),
                             ],
                         ),
                     ],
                 ),
                 html.Div(
-                    id="graph-container",
+                    id="graph-container",  # right-column
                     children=[
                         dcc.Graph(id='app-analytics', animate=True),
                         dcc.Interval(id='analytics-update', interval=interval, n_intervals=0),
-                        html.P(id="chart-selector", children="Select chart:"),
+                        # html.P(id="chart-selector", children="Select chart:"),
 
                     ],
                 ),
             ],
         ),
+
+        html.Div(
+            id='footer',
+            children=[
+                html.Pre('Credits'),
+                html.Pre('Rahul Raj'),
+                html.Pre('Indian Institute of Technology Kanpur - 2018'),
+                html.Pre('Source Code: link'),
+            ]
+        )
     ],
 )
 
@@ -221,11 +251,14 @@ def update_style(value):
     return {'transform': 'rotate({}deg)'.format(value)}
 
 
-# @app.callback(
-#     dash.dependencies.Output('slider-output-container', 'children'),
-#     [dash.dependencies.Input('rotate-slider', 'value')])
-# def update_output(value):
-#     return 'Drag the slider to set orientation of plot. Current: {} deg'.format(value)
+@app.callback(
+    dash.dependencies.Output('map', 'hidden'),
+    [dash.dependencies.Input('map_checkbox', 'value')])
+def update_output(value):
+    if value:
+        return False
+    else:
+        return True
 
 
 @app.callback(

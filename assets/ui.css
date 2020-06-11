@@ -1,28 +1,16 @@
-body {
-    font-family: sans-serif;
-    text-align: center;
-    
-}
-
-h1, h2, h3, h4, h5, h6 {
-    color: hotpink;
-    text-align: center;
-}
 
 #app-plotid{
     display: block;
+
 }
 
 .app-image{
     position: absolute;
     top: 35%;
-    /*left: 5%;*/
-    /* right:5%;  */
     text-align: center;
-    width: 50%;
-    margin-left: auto;
+    width: 50.5%;
+    margin-left: 20px;
     margin-right: auto;
-    /* display: block; */
 }
 /* 
 #container{
