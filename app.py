@@ -21,12 +21,16 @@ file = open('analytics/steps_test.txt', 'r')
 # ignoring the first line
 file.readline()
 
+# ignoring n lines
+for i in range(25):
+    file.readline()
+
 img = Image.open('assets/rm3_1.png')
 
 max_trail_limit = 15
 X = deque(maxlen=max_trail_limit)
 Y = deque(maxlen=max_trail_limit)
-interval = 5000  # Timer for updating the graph in milli seconds
+interval = 1000  # Timer for updating the graph in milli seconds
 
 # Initial data
 initial_data = tail()
@@ -174,7 +178,7 @@ app.layout = html.Div(
                 html.Pre('Credits'),
                 html.Pre('Rahul Raj'),
                 html.Pre('Indian Institute of Technology Kanpur - 2018'),
-                html.Pre('Source Code: link'),
+                html.Pre('Source Code: https://github.com/rahulrajpl/pdr-tracker'),
             ]
         )
     ],
@@ -209,7 +213,7 @@ def update_analytics(n):
     )
     threshold_data = go.Scatter(
         x=[min(T), max(T) + 20],
-        y=[float(theta)] * 50,
+        y=[float(theta-5)] * 50,
         name='Threshold Score',
         mode='lines',
         # showlegend=False,
@@ -279,6 +283,7 @@ def update_graph(n):
     # -----------------------------------------------------
     # For simulating data saved in real-time
     if not file == "":
+        
         file_data = file.readline().split(',')
         print(file_data)
         new_x, new_y = file_data[1], file_data[2]

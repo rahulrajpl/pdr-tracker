@@ -15,7 +15,7 @@ class ObluAnalytics:
         self.lag_vector_length = lag_vector_length
 
     def get_threshold_score(self, data_path='../sensor/GetData/steps.txt'):
-        df = pd.read_csv(data_path, skiprows=1, header=None, usecols=[1, 2])
+        df = pd.read_csv(data_path, skiprows=20, header=None, usecols=[1, 2])
         x_train_data = (df[1] + df[2]) / 2
 
         # N = len(x_train_data)
